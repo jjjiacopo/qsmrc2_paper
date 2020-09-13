@@ -51,7 +51,8 @@ if __name__=="__main__":
         else:
             winners[sub] = [met]
     print('winners')
-    print(winners)
+    for k, v in sorted(winners.items(), key=lambda item: len(item[1]))[::-1]:
+        print(f"{k}: {v}")
 
     intop5 = {}
     for met in all_metrics:  # + ['visual']:
@@ -62,6 +63,10 @@ if __name__=="__main__":
                 intop5[sub].append(met)
             else:
                 intop5[sub] = [met]
+
+    print('Top5')
+    for k, v in sorted(intop5.items(), key=lambda item: len(item[1]))[::-1]:
+        print(f"{k}: {v}")
 
     ordered_keys = sorted(list(intop5.keys()), key=lambda k: len(intop5[k]), reverse=True)
     for ok in ordered_keys:

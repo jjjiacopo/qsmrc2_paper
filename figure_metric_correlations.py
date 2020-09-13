@@ -22,10 +22,13 @@ if __name__=="__main__":
     inputfile = 'stage1'
     df = pd.read_pickle(datapath / (inputfile+'.pkl'))
 
+    df['Mean Visual'] = 1/3 * (df['Streaking'] + df['Unnaturalness'] + df['NoiseVisual'])
+
     all_metrics = ['rmse', 'rmse_detrend', 'rmse_detrend_Tissue',
                    'rmse_detrend_Blood', 'rmse_detrend_DGM',
                    'DeviationFromLinearSlope', 'CalcStreak', 'DeviationFromCalcMoment',
-                   'Streaking', 'Unnaturalness', 'NoiseVisual'
+                   'Streaking', 'Unnaturalness', 'NoiseVisual',
+                   'Mean Visual'
                    ]
 
     toplength = 5
@@ -45,7 +48,8 @@ if __name__=="__main__":
                  'DeviationFromLinearSlope',
                  'CalcStreak',
                  'DeviationFromCalcMoment',
-                 'Streaking', 'Unnaturalness', 'NoiseVisual']
+                 'Streaking', 'Unnaturalness', 'NoiseVisual',
+                 'Mean Visual']
     myrenamed = ['NRMSE',
                  'dNRMSE',
                  'dNRMSE Tissue',
@@ -54,7 +58,8 @@ if __name__=="__main__":
                  'Slope Error',
                  'Calcif. Streaking',
                  'Calcif. Moment Error',
-                 'Visual Streaking', 'Visual Unnaturalness', 'Visual Noise']
+                 'Visual Streaking', 'Visual Unnaturalness', 'Visual Noise',
+                 'Mean Visual']
     for m, n in zip(mymetrics, myrenamed):
         top[n] = top[m]
         df[n] = df[m]
