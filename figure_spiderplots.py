@@ -26,7 +26,8 @@ if __name__=="__main__":
 
     all_metrics = ['rmse', 'rmse_detrend', 'rmse_detrend_Tissue',
                    'rmse_detrend_Blood', 'rmse_detrend_DGM',
-                   'DeviationFromLinearSlope', 'CalcStreak', 'DeviationFromCalcMoment',
+                   'DeviationFromLinearSlope',
+                   'CalcStreak', 'DeviationFromCalcMoment',
                    'Visual'
                    ]
 
@@ -73,14 +74,16 @@ if __name__=="__main__":
         print(ok, len(intop5[ok]), intop5[ok])
 
     # compute scaled range for spiderplots
-    spider_metrics = ['rmse', 'Visual', 'DeviationFromLinearSlope', 'CalcStreak', 'DeviationFromCalcMoment', 'rmse_detrend_DGM', 'rmse_detrend_Blood', ]
+    spider_metrics = ['rmse', 'Visual', #'DeviationFromLinearSlope',
+                      'CalcStreak', 'DeviationFromCalcMoment',
+                      'rmse_detrend_DGM', 'rmse_detrend_Blood', ]
     dfmin = df.dropna().groupby('Regularization terms')[spider_metrics].min()
     datamax = dfmin.values.max(axis=0)
 
     print('dfmin.max(axis=0)')
     print(dfmin.max(axis=0))
 
-    datamax = np.array([100.0, 3.0, 0.1, 0.1, 30.0, 100.0, 100.0])
+    datamax = np.array([100.0, 3.0, 0.1, 30.0, 100.0, 100.0])
     print('all_metrics')
     print(all_metrics)
 
@@ -131,12 +134,19 @@ if __name__=="__main__":
             # ax.fill(theta, d,  alpha=0.1)
         ax.set_rmax(1.0)
         ax.set_rmin(0.0)
-        display_metrics = ['NRMSE', 'Visual', 'Slope Error', 'Calc. Streaking', 'Calcification Error', 'NRMSEd DeepGM',
+        display_metrics = ['NRMSE', 'Visual', #'Slope Error',
+                           'Calc. Streaking', 'Calcification Error', 'NRMSEd DeepGM',
                            'NRMSEd Blood']
         assert len(display_metrics) == len(spoke_labels)
         ax.set_varlabels(display_metrics)
 
-        legend = ax.legend(dftop['Preferred Acronym'], loc=(1.1, .5),
-                           labelspacing=0.1, fontsize='small')
+        acronyms = dftop['Preferred Acronym'].values
+        acronyms_fixed = []
+        for acr in acronyms:
+            while acr in acronyms_fixed:
+                acr += "*"
+            acronyms_fixed.append(acr)
+        legend = ax.legend(acronyms_fixed, loc=(0.8, -0.05),
+                           labelspacing=0.1, fontsize='large')
         plt.savefig(imagepath / f"radarplot_top5any_{sortingmetric.replace(' ', '_')}.png", bbox_inches='tight', dpi=300)
         plt.savefig(imagepath / f"radarplot_top5any_{sortingmetric.replace(' ', '_')}.svg")

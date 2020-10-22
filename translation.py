@@ -2,6 +2,7 @@
 translation = {'algorithm type':
     {
         'low-rank Hankel matrix approach': 'iterative',
+        'low-rank': 'iterative',
         'Deep Learning': 'deep learning',
         'Spatial-domain iterative reconstruction': 'iterative',
         'Closed-form direct solution': 'direct',
